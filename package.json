@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "run": "ts-node src/index.ts",
+    "start:cluster": "./scripts/start-cluster.sh"
   },
   "author": "",
   "license": "ISC",
