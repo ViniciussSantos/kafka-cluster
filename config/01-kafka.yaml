@@ -54,7 +54,7 @@ spec:
                     - key: strimzi.io/name
                       operator: In
                       values:
-                        - my-cluster-zookeeper
+                        - CLUSTER-NAME-zookeeper
                 topologyKey: "kubernetes.io/hostname"
   entityOperator:
     topicOperator: {}
