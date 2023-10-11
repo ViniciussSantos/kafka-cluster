@@ -2,7 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnector
 metadata:
   name: "minio-connector"
-  namespace: "kafka"
+  namespace: "minio"
   labels:
     strimzi.io/cluster: connect-cluster
 spec:
@@ -12,6 +12,7 @@ spec:
     task.max: "1"
     topics: my-topic
     s3.bucket.name: test-bucket
+    store.url: https://play.min.io:50000
     storage.class: io.confluent.connect.s3.storage.S3Storage
     format.class: io.confluent.connect.s3.format.json.JsonFormat
     partitioner.class: io.confluent.connect.storage.partitioner.DefaultPartitioner
