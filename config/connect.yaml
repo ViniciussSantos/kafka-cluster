@@ -10,10 +10,6 @@ spec:
   version: 3.5.1
   replicas: 1
   bootstrapServers: my-cluster-kafka-bootstrap:9093
-  tls:
-    trustedCertificates:
-      - secretName: my-cluster-cluster-ca-cert
-        certificate: ca.crt
   config:
     group.id: connect-cluster
     offset.storage.topic: connect-offsets
