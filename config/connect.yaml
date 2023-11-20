@@ -1,15 +1,20 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
-  name: connect-cluster
-  namespace: kafka
-  annotations:
-    strimzi.io/use-connector-resources: "true"
+  name: my-connect-cluster
+#  annotations:
+#  # use-connector-resources configures this KafkaConnect
+#  # to use KafkaConnector resources to avoid
+#  # needing to call the Connect REST API directly
+#    strimzi.io/use-connector-resources: "true"
 spec:
-  image: openlake/kafka-connect:0.34.0
   version: 3.5.1
   replicas: 1
   bootstrapServers: my-cluster-kafka-bootstrap:9093
+  tls:
+    trustedCertificates:
+      - secretName: my-cluster-cluster-ca-cert
+        certificate: ca.crt
   config:
     group.id: connect-cluster
     offset.storage.topic: connect-offsets
@@ -19,10 +24,20 @@ spec:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
-  template:
-    connectContainer:
-      env:
-        - name: AWS_ACCESS_KEY_ID
-          value: "minioadmin"
-        - name: AWS_SECRET_ACCESS_KEY
-          value: "minioadmin"
+  build:
+    output:
+      type: docker
+      # This image will last only for 24 hours and might be overwritten by other users
+      # Strimzi will use this tag to push the image. But it will use the digest to pull
+      # the container image to make sure it pulls exactly the image we just built. So
+      # it should not happen that you pull someone else's container image. However, we
+      # recommend changing this to your own container registry or using a different
+      # image name for any other than demo purposes.
+      #
+      # TODO: CHANGE THIS TO MY OWN CONTAINER IMAGE
+      image: ttl.sh/strimzi-connect-example-3.6.0:24h
+    plugins:
+      - name: mqtt-connector
+        artifacts:
+          - type: jar
+            url: ${CONNECT_PLUGIN_URL}
