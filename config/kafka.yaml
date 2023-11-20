@@ -19,6 +19,21 @@ spec:
         port: 9094
         type: nodeport
         tls: false
+    # this config forces k8s to deploy every kafka broker replica in different nodes
+    # so you need to have 3 nodes to deploy 3 brokers and so on
+    # remove this if you don't want to enforce this rule
+    template:
+      pod:
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: strimzi.io/name
+                      operator: In
+                      values:
+                        - my-cluster-kafka
+                topologyKey: "kubernetes.io/hostname"
     config:
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3
