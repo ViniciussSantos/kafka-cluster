@@ -1,15 +1,16 @@
+---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnector
 metadata:
-  name: "minio-connector"
-  namespace: "minio"
+  name: minio-connector
+  namespace: minio
   labels:
     strimzi.io/cluster: connect-cluster
 spec:
   class: io.confluent.connect.s3.S3SinkConnector
   config:
     connector.class: io.confluent.connect.s3.S3SinkConnector
-    task.max: "1"
+    task.max: '1'
     topics: my-topic
     s3.bucket.name: test-bucket
     store.url: https://play.min.io:50000

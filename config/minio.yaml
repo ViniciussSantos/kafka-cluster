@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -16,16 +17,13 @@ spec:
   containers:
     - name: minio
       image: quay.io/minio/minio:latest
-      command:
-        - /bin/bash
-        - -c
-      args:
-        - minio server /data --console-address :9090
+      command: [/bin/bash, -c]
+      args: [minio server /data --console-address :9090]
       volumeMounts:
         - mountPath: /data
           name: localvolume
   volumes:
     - name: localvolume
-      hostPath: # MinIO generally recommends using locally-attached volumes
-        path: /mnt/disk1/data # Specify a path to a local drive or volume on the Kubernetes worker node
-        type: DirectoryOrCreate # The path to the last directory must exist
+      hostPath:  # MinIO generally recommends using locally-attached volumes
+        path: /mnt/disk1/data  # Specify a path to a local drive or volume on the Kubernetes worker node
+        type: DirectoryOrCreate  # The path to the last directory must exist

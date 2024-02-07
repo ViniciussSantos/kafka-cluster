@@ -14,33 +14,18 @@ metadata:
     k8s-app: flannel
   name: flannel
 rules:
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-    verbs:
-      - get
-  - apiGroups:
-      - ""
-    resources:
-      - nodes
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - ""
-    resources:
-      - nodes/status
-    verbs:
-      - patch
-  - apiGroups:
-      - networking.k8s.io
-    resources:
-      - clustercidrs
-    verbs:
-      - list
-      - watch
+  - apiGroups: ['']
+    resources: [pods]
+    verbs: [get]
+  - apiGroups: ['']
+    resources: [nodes]
+    verbs: [get, list, watch]
+  - apiGroups: ['']
+    resources: [nodes/status]
+    verbs: [patch]
+  - apiGroups: [networking.k8s.io]
+    resources: [clustercidrs]
+    verbs: [list, watch]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -129,8 +114,7 @@ spec:
               - matchExpressions:
                   - key: kubernetes.io/os
                     operator: In
-                    values:
-                      - linux
+                    values: [linux]
       hostNetwork: true
       priorityClassName: system-node-critical
       tolerations:
@@ -140,19 +124,14 @@ spec:
       initContainers:
         - name: install-cni-plugin
           image: docker.io/flannel/flannel-cni-plugin:v1.2.0
-          command:
-            - cp
-          args:
-            - -f
-            - /flannel
-            - /opt/cni/bin/flannel
+          command: [cp]
+          args: [-f, /flannel, /opt/cni/bin/flannel]
           volumeMounts:
             - name: cni-plugin
               mountPath: /opt/cni/bin
         - name: install-cni
           image: docker.io/flannel/flannel:v0.22.3
-          command:
-            - cp
+          command: [cp]
           args:
             - -f
             - /etc/kube-flannel/cni-conf.json
@@ -165,21 +144,20 @@ spec:
       containers:
         - name: kube-flannel
           image: docker.io/flannel/flannel:v0.22.3
-          command:
-            - /opt/bin/flanneld
+          command: [/opt/bin/flanneld]
           args:
             - --ip-masq
             - --kube-subnet-mgr
-            #https://github.com/flannel-io/flannel/blob/master/Documentation/troubleshooting.md#vagrant
+            # https://github.com/flannel-io/flannel/blob/master/Documentation/troubleshooting.md# vagrant
             - --iface=eth1
           resources:
             requests:
-              cpu: "100m"
-              memory: "50Mi"
+              cpu: 100m
+              memory: 50Mi
           securityContext:
             privileged: false
             capabilities:
-              add: ["NET_ADMIN", "NET_RAW"]
+              add: [NET_ADMIN, NET_RAW]
           env:
             - name: POD_NAME
               valueFrom:
@@ -190,7 +168,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: EVENT_QUEUE_DEPTH
-              value: "5000"
+              value: '5000'
           volumeMounts:
             - name: run
               mountPath: /run/flannel

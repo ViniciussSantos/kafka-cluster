@@ -1,3 +1,4 @@
+---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
@@ -34,4 +35,4 @@ spec:
       - name: mqtt-connector
         artifacts:
           - type: jar
-            url: ${CONNECT_PLUGIN_URL}
+            url: https://filetransfer.io/data-package/Binefho5/download

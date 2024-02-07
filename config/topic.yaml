@@ -1,3 +1,4 @@
+---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
@@ -10,7 +11,6 @@ spec:
   replicas: 3
   config:
     cleanup.policy: compact
-
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -24,7 +24,6 @@ spec:
   replicas: 3
   config:
     cleanup.policy: compact
-
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -38,7 +37,6 @@ spec:
   replicas: 3
   config:
     cleanup.policy: compact
-
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
