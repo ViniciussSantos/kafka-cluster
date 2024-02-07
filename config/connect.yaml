@@ -35,4 +35,4 @@ spec:
       - name: mqtt-connector
         artifacts:
           - type: jar
-            url: https://filetransfer.io/data-package/Binefho5/download
+            url: www.example.com  # insert your link here
