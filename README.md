@@ -8,21 +8,23 @@ A local emulation of a fleet of VMs running a kubernetes cluster. I use it prima
 
 For running this project, you should have the following technologies installed in your machine:
 
-- Vagrant
-- Kubectl
-- VirtualBox
+- [Vagrant](https://www.vagrantup.com/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [VirtualBox](https://www.virtualbox.org/)
 
 Also, you need to have enough memory and CPU cores to run the VMs. Kubeadm asks for at least 2 CPU cores and 2GB of ram memory for each node running.
 
 ### How to run the project
 
-With everything installed, start the VMs by running the following command in the same path of the Vagrantfile:
+With everything installed, create a private network at the VirtualBox Host network manager with the ipv4 address 192.168.60.1 and update the Vagrantfile to use it (node.vm.network). By default, the script uses the host-only network called "vboxnet0".
+
+start the VMs by running the following command in the same path of the Vagrantfile:
 
 ```bash
 vagrant up
 ```
 
-During the initialization of the master01 node/VM, it will print a message asking you to update your .kube/config with the printed information so you can run kubectl commands and have them reflected in your cluster.
+During the initialization of the master01 node/VM, vagrant will print a message asking you to update your .kube/config with the printed information so you can run kubectl commands and have them reflected in your cluster.
 
 After this, run the following command in the project's path
 
@@ -38,7 +40,13 @@ Then, run the following script to configure the mqtt source connector
 ./scripts/configure-connect.sh
 ```
 
-You also can use the the docker container by running `docker compose up -d` to access the [kafka CLI tools](https://docs.confluent.io/kafka/operations-tools/kafka-tools.html) and running
+to check if the mqtt connector was deployed, run the following command
+
+```bash
+curl $(kubectl get node worker01 -o=jsonpath='{range .status.addresses[?(@.type=="InternalIP")]}{.address}{"\n"}'):$(kubectl get service kafka-connect-port -o=jsonpath='{.spec.ports[0].nodePort}{"\n"}' -n kafka)/connector-plugins | jq
+```
+
+There is also a docker compose file that runs a mosquitto MQTT broker used by the connector. You also can use the the docker container to access the [kafka CLI tools](https://docs.confluent.io/kafka/operations-tools/kafka-tools.html) and running
 
 ```bash
 docker compose exec kafka ${insert your kafka CLI command here}
