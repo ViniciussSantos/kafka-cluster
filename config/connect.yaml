@@ -21,6 +21,10 @@ spec:
     offset.storage.topic: connect-offsets
     config.storage.topic: connect-configs
     status.storage.topic: connect-status
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: true
+    value.converter.schemas.enable: true
     # -1 means it will use the default replication factor configured in the broker
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
@@ -34,5 +38,5 @@ spec:
     plugins:
       - name: mqtt-connector
         artifacts:
-          - type: jar
-            url: www.example.com  # insert your link here
+          - type: zip
+            url: https://github.com/lensesio/stream-reactor/releases/download/6.0.2/kafka-connect-mqtt-6.0.2.zip
