@@ -3,7 +3,7 @@ ENV['VAGRANT_NO_PARALLEL'] = 'yes'
 Vagrant.configure(2) do |config|
 
   config.vm.define "master01" do |node|
-    node.vm.box               = "generic/ubuntu1804"
+    node.vm.box               = "generic/ubuntu2004"
     node.vm.box_check_update  = false
     node.vm.hostname          = "master01.kubernetes.cluster"
     node.vm.network "private_network", ip: "192.168.60.11", name: "vboxnet0"
@@ -21,7 +21,7 @@ Vagrant.configure(2) do |config|
   end
   (1..3).each do |i|
     config.vm.define "worker0#{i}" do |node|
-      node.vm.box               = "generic/ubuntu1804"
+      node.vm.box               = "generic/ubuntu2004"
       node.vm.box_check_update  = false
       node.vm.hostname          = "worker0#{i}.kubernetes.cluster"
       node.vm.network "private_network", ip: "192.168.60.2#{i}"
