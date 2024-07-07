@@ -39,4 +39,4 @@ spec:
       - name: mqtt-connector
         artifacts:
           - type: zip
-            url: https://github.com/lensesio/stream-reactor/releases/download/6.0.2/kafka-connect-mqtt-6.0.2.zip
+            url: https://github.com/lensesio/stream-reactor/releases/download/7.3.2/kafka-connect-mqtt-7.3.2.zip
