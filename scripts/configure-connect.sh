@@ -13,7 +13,7 @@ curl "$node_ip:$service_port/connectors" -X POST -H 'Content-Type: application/j
  "connect.mqtt.timeout":"1000",
  "connect.mqtt.keep.alive":"1000",
  "connect.mqtt.service.quality":"1",
- "connect.mqtt.kcql":"INSERT INTO test-topic SELECT * FROM test/topic",
+ "connect.mqtt.kcql":"INSERT INTO test-topic SELECT * FROM test/topic WITHCONVERTER=com.datamountaineer.streamreactor.connect.converters.source.JsonSimpleConverter",
  "connect.progress.enabled":"true",
  "connect.mqtt.process.duplicates":"true",
  "connect.mqtt.log.message":"true"
