@@ -32,9 +32,9 @@ spec:
   build:
     output:
       type: docker
-      # This image will last only for 24 hours
+      # This image will last only for 6 hours
       # thank you ttl.sh, no need create an docker registry account and configure the cli to use it
-      image: ttl.sh/my-cluster-kafka-connect:24h
+      image: ttl.sh/my-cluster-kafka-connect:6h
     plugins:
       - name: mqtt-connector
         artifacts:
